@@ -39,4 +39,4 @@ ENV PORT=${PORT}
 EXPOSE ${PORT}
 
 # Run migrations and start the application
-CMD npm run db:migrate && node .
+CMD [ "node", "." ]

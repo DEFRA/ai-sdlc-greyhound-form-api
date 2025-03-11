@@ -1,6 +1,6 @@
 import { MongoClient } from 'mongodb'
 import { LockManager } from 'mongo-locks'
-
+import { runMigrations } from '~/src/migrations/index.js'
 import { config } from '~/src/config/index.js'
 
 /**
@@ -28,6 +28,11 @@ export const mongoDb = {
       const databaseName = options.databaseName
       const db = client.db(databaseName)
       const locker = new LockManager(db.collection('mongo-locks'))
+
+      // Run migrations before creating indexes
+      server.logger.info('Running database migrations...')
+      await runMigrations(db)
+      server.logger.info('Database migrations completed')
 
       await createIndexes(db)
 
