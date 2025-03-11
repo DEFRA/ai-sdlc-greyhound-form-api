@@ -38,4 +38,5 @@ ARG PORT
 ENV PORT=${PORT}
 EXPOSE ${PORT}
 
-CMD [ "node", "." ]
+# Run migrations and start the application
+CMD npm run db:migrate && node .
