@@ -3,7 +3,8 @@ import {
   formFindAllController,
   formFindOneController,
   formUpdateController,
-  formSubmitController
+  formSubmitController,
+  formDeleteController
 } from './controllers/index.js'
 
 /**
@@ -58,6 +59,17 @@ const forms = {
             tags: ['api', 'forms']
           },
           ...formUpdateController
+        },
+        {
+          method: 'DELETE',
+          path: '/api/forms/{formId}',
+          options: {
+            description: 'Delete form by ID',
+            notes:
+              'Deletes a greyhound racetrack welfare licence application form by ID if it is still in progress',
+            tags: ['api', 'forms']
+          },
+          ...formDeleteController
         },
         {
           method: 'POST',

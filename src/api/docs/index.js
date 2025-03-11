@@ -30,7 +30,6 @@ const docs = {
         jsonPath: '/swagger.json',
         grouping: 'tags',
         sortTags: 'alpha',
-        sortEndpoints: 'method',
         definitionPrefix: 'definitions',
         definitions: {
           Form: {
