@@ -70,14 +70,26 @@ async function submitForm(db, formId) {
         updatedAt: new Date()
       }
     },
-    { returnDocument: 'after', projection: { _id: 0, id: '$_id' } }
+    {
+      returnDocument: 'after',
+      projection: {
+        _id: 0,
+        id: '$_id',
+        formName: 1,
+        referenceNumber: 1,
+        status: 1,
+        createdAt: 1,
+        updatedAt: 1,
+        pages: 1
+      }
+    }
   )
 
-  if (!result.value) {
+  if (!result) {
     throw Boom.notFound(`Form with ID ${formId} not found`)
   }
 
-  return result.value
+  return result
 }
 
 export { submitForm }

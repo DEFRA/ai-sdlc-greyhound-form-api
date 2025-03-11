@@ -1,4 +1,5 @@
 import { createDefaultFormSchema } from '../schemas/index.js'
+import { generateReferenceNumber } from '../../../utils/index.js'
 
 /**
  * Creates a new form in the database
@@ -11,6 +12,7 @@ async function createForm(db, formData) {
   const newForm = {
     ...createDefaultFormSchema(),
     ...formData,
+    referenceNumber: generateReferenceNumber(),
     createdAt: new Date(),
     updatedAt: new Date()
   }

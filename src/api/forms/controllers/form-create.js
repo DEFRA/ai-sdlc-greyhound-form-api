@@ -21,7 +21,17 @@ const formCreateController = {
             description: 'Form created successfully',
             schema: Joi.object({
               message: Joi.string().example('Form created successfully'),
-              form: Joi.object().ref('definitions.Form')
+              form: Joi.object({
+                id: Joi.string().example('60d21b4667d0d8992e610c85'),
+                formName: Joi.string().example(
+                  'Greyhound Track License Application - Track A'
+                ),
+                referenceNumber: Joi.string().example('HDJ2123F'),
+                status: Joi.string().example('in-progress'),
+                createdAt: Joi.date().example(new Date().toISOString()),
+                updatedAt: Joi.date().example(new Date().toISOString()),
+                pages: Joi.object().example({})
+              })
             })
           },
           400: {

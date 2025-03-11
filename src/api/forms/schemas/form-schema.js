@@ -7,6 +7,7 @@
  * Form schema definition based on the PRD requirements.
  * @typedef {object} FormSchema
  * @property {string} formName - The name of the form instance
+ * @property {string} referenceNumber - The unique reference number in GOV.UK format (e.g., HDJ2123F)
  * @property {string} status - The status of the form (in-progress or submitted)
  * @property {Date} createdAt - The date the form was created
  * @property {Date} updatedAt - The date the form was last updated
@@ -54,6 +55,7 @@
 function createDefaultFormSchema() {
   return {
     formName: '',
+    referenceNumber: '',
     status: 'in-progress',
     createdAt: new Date(),
     updatedAt: new Date(),

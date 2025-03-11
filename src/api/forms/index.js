@@ -83,6 +83,12 @@ const forms = {
           ...formSubmitController
         }
       ])
+
+      // Register the createForm method
+      server.method('createForm', async (db, formData) => {
+        const { createForm } = await import('./helpers/index.js')
+        return createForm(db, formData)
+      })
     }
   }
 }
