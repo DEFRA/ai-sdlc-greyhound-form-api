@@ -18,10 +18,24 @@ const formFindOneController = {
       'hapi-swagger': {
         responses: {
           200: {
-            description: 'Form retrieved successfully'
+            description: 'Form retrieved successfully',
+            schema: Joi.object({
+              message: Joi.string().example('Form retrieved successfully'),
+              form: Joi.object().ref('definitions.Form')
+            })
           },
           404: {
-            description: 'Form not found'
+            description: 'Form not found',
+            schema: Joi.object({
+              statusCode: Joi.number().example(404),
+              error: Joi.string().example('Not Found'),
+              message: Joi.string().example('Form not found')
+            })
+          }
+        },
+        validate: {
+          params: {
+            formId: Joi.string().required().example('65f9a2b3c4d5e6f7a8b9c0d1')
           }
         }
       }
