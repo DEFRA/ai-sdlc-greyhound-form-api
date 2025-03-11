@@ -19,6 +19,7 @@ async function findAllForms(db, options = {}) {
       _id: 0,
       id: '$_id',
       formName: 1,
+      referenceNumber: 1,
       status: 1,
       createdAt: 1,
       updatedAt: 1,

@@ -3,7 +3,8 @@ import {
   formFindAllController,
   formFindOneController,
   formUpdateController,
-  formSubmitController
+  formSubmitController,
+  formDeleteController
 } from './controllers/index.js'
 
 /**
@@ -60,6 +61,17 @@ const forms = {
           ...formUpdateController
         },
         {
+          method: 'DELETE',
+          path: '/api/forms/{formId}',
+          options: {
+            description: 'Delete form by ID',
+            notes:
+              'Deletes a greyhound racetrack welfare licence application form by ID if it is still in progress',
+            tags: ['api', 'forms']
+          },
+          ...formDeleteController
+        },
+        {
           method: 'POST',
           path: '/api/forms/{formId}/submit',
           options: {
@@ -71,6 +83,12 @@ const forms = {
           ...formSubmitController
         }
       ])
+
+      // Register the createForm method
+      server.method('createForm', async (db, formData) => {
+        const { createForm } = await import('./helpers/index.js')
+        return createForm(db, formData)
+      })
     }
   }
 }

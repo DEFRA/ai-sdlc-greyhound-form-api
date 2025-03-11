@@ -18,7 +18,20 @@ const formFindAllController = {
       'hapi-swagger': {
         responses: {
           200: {
-            description: 'Forms retrieved successfully'
+            description: 'Forms retrieved successfully',
+            schema: Joi.object({
+              message: Joi.string().example('Forms retrieved successfully'),
+              forms: Joi.array().items(Joi.object().ref('definitions.Form'))
+            })
+          }
+        },
+        validate: {
+          query: {
+            status: Joi.string()
+              .valid('in-progress', 'submitted')
+              .optional()
+              .example('in-progress')
+              .description('Filter forms by status')
           }
         }
       }

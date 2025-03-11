@@ -52,6 +52,7 @@ async function updateForm(db, formId, updateData) {
         _id: 0,
         id: '$_id',
         formName: 1,
+        referenceNumber: 1,
         status: 1,
         createdAt: 1,
         updatedAt: 1,

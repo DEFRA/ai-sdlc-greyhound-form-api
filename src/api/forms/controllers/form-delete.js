@@ -1,12 +1,12 @@
 import Joi from 'joi'
-import { submitForm } from '../helpers/index.js'
+import { deleteForm } from '../helpers/index.js'
 import { statusCodes } from '~/src/api/common/constants/status-codes.js'
 
 /**
- * Controller for submitting a form
+ * Controller for deleting a form
  * @satisfies {Partial<import('@hapi/hapi').ServerRoute>}
  */
-const formSubmitController = {
+const formDeleteController = {
   options: {
     tags: ['api', 'forms'],
     validate: {
@@ -17,20 +17,16 @@ const formSubmitController = {
     plugins: {
       'hapi-swagger': {
         responses: {
-          200: {
-            description: 'Form submitted successfully',
-            schema: Joi.object({
-              message: Joi.string().example('Form submitted successfully'),
-              form: Joi.object().ref('definitions.Form')
-            })
+          204: {
+            description: 'Form deleted successfully'
           },
           400: {
-            description: 'Form cannot be submitted',
+            description: 'Form cannot be deleted',
             schema: Joi.object({
               statusCode: Joi.number().example(400),
               error: Joi.string().example('Bad Request'),
               message: Joi.string().example(
-                'Form cannot be submitted - required fields are missing'
+                'Form cannot be deleted as it has already been submitted'
               )
             })
           },
@@ -53,12 +49,9 @@ const formSubmitController = {
   },
   handler: async (request, h) => {
     const { formId } = request.params
-    const form = await submitForm(request.db, formId)
-
-    return h
-      .response({ message: 'Form submitted successfully', form })
-      .code(statusCodes.ok)
+    await deleteForm(request.db, formId)
+    return h.response().code(statusCodes.noContent)
   }
 }
 
-export { formSubmitController }
+export { formDeleteController }

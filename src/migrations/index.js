@@ -1,12 +1,13 @@
 import { MongoClient } from 'mongodb'
 import { config } from '~/src/config/index.js'
 import createFormsCollection from './001-create-forms-collection.js'
+import addReferenceNumber from './002-add-reference-number.js'
 import { logger } from '../utils/logger.js'
 
 /**
  * List of all migrations to run in order
  */
-const migrations = [createFormsCollection]
+const migrations = [createFormsCollection, addReferenceNumber]
 
 /**
  * Runs all migrations in order
