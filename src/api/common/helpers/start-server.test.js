@@ -66,14 +66,22 @@ describe('#startServer', () => {
       )
       expect(mockHapiLoggerInfo).toHaveBeenNthCalledWith(
         3,
-        'MongoDb connected to ai-sdlc-greyhound-form-api'
+        'Running database migrations...'
       )
       expect(mockHapiLoggerInfo).toHaveBeenNthCalledWith(
         4,
-        'Server started successfully'
+        'Database migrations completed'
       )
       expect(mockHapiLoggerInfo).toHaveBeenNthCalledWith(
         5,
+        'MongoDb connected to ai-sdlc-greyhound-form-api'
+      )
+      expect(mockHapiLoggerInfo).toHaveBeenNthCalledWith(
+        6,
+        'Server started successfully'
+      )
+      expect(mockHapiLoggerInfo).toHaveBeenNthCalledWith(
+        7,
         'Access your backend on http://localhost:3098'
       )
     })

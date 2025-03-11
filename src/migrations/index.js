@@ -1,6 +1,6 @@
 import { MongoClient } from 'mongodb'
 import { config } from '~/src/config/index.js'
-import * as createFormsCollection from './001-create-forms-collection.js'
+import createFormsCollection from './001-create-forms-collection.js'
 import { logger } from '../utils/logger.js'
 
 /**
@@ -10,15 +10,23 @@ const migrations = [createFormsCollection]
 
 /**
  * Runs all migrations in order
+ * @param {import('mongodb').Db} [providedDb] - Optional MongoDB database instance to use
  * @returns {Promise<void>}
  */
-async function runMigrations() {
+async function runMigrations(providedDb) {
   logger.info('Running migrations...')
 
-  const client = await MongoClient.connect(config.get('mongoUri'))
-  const db = client.db(config.get('mongoDatabase'))
+  let client
+  let db
 
   try {
+    if (providedDb) {
+      db = providedDb
+    } else {
+      client = await MongoClient.connect(config.get('mongoUri'))
+      db = client.db(config.get('mongoDatabase'))
+    }
+
     // Create migrations collection if it doesn't exist
     try {
       await db.createCollection('migrations')
@@ -45,7 +53,7 @@ async function runMigrations() {
       }
 
       logger.info(`Running migration: ${migrationName}...`)
-      await migration.up(db)
+      await migration(db, logger)
 
       // Record that the migration has been run
       await db.collection('migrations').insertOne({
@@ -61,61 +69,22 @@ async function runMigrations() {
     logger.error('Error running migrations:', error)
     throw error
   } finally {
-    await client.close()
+    if (client) {
+      await client.close()
+    }
   }
 }
 
 /**
  * Rolls back the last migration
- * @returns {Promise<void>}
+ * Note: This functionality is not supported with the new migration format
+ * @deprecated
  */
 async function rollbackLastMigration() {
-  logger.info('Rolling back last migration...')
-
-  const client = await MongoClient.connect(config.get('mongoUri'))
-  const db = client.db(config.get('mongoDatabase'))
-
-  try {
-    // Get the last migration that was run
-    const lastMigration = await db
-      .collection('migrations')
-      .find({})
-      .sort({ timestamp: -1 })
-      .limit(1)
-      .toArray()
-
-    if (lastMigration.length === 0) {
-      logger.info('No migrations to roll back')
-      return
-    }
-
-    const migrationName = lastMigration[0].name
-
-    // Find the migration in our list
-    const migration = migrations.find(
-      (m) => (m.name || 'unknown') === migrationName
-    )
-
-    if (!migration) {
-      logger.info(
-        `Migration ${migrationName} not found in migrations list, cannot roll back`
-      )
-      return
-    }
-
-    logger.info(`Rolling back migration: ${migrationName}...`)
-    await migration.down(db)
-
-    // Remove the migration record
-    await db.collection('migrations').deleteOne({ name: migrationName })
-
-    logger.info(`Migration ${migrationName} rolled back successfully`)
-  } catch (error) {
-    logger.error('Error rolling back migration:', error)
-    throw error
-  } finally {
-    await client.close()
-  }
+  logger.warn(
+    'Rollback functionality is not supported with the new migration format'
+  )
+  return Promise.resolve()
 }
 
 export { runMigrations, rollbackLastMigration }

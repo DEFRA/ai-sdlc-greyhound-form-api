@@ -43,19 +43,28 @@ async function updateForm(db, formId, updateData) {
   // Always update the updatedAt timestamp
   updateFields.updatedAt = new Date()
 
-  const result = await db
-    .collection('forms')
-    .findOneAndUpdate(
-      { _id: objectId },
-      { $set: updateFields },
-      { returnDocument: 'after', projection: { _id: 0, id: '$_id' } }
-    )
+  const result = await db.collection('forms').findOneAndUpdate(
+    { _id: objectId },
+    { $set: updateFields },
+    {
+      returnDocument: 'after',
+      projection: {
+        _id: 0,
+        id: '$_id',
+        formName: 1,
+        status: 1,
+        createdAt: 1,
+        updatedAt: 1,
+        pages: 1
+      }
+    }
+  )
 
-  if (!result.value) {
+  if (!result) {
     throw Boom.notFound(`Form with ID ${formId} not found`)
   }
 
-  return result.value
+  return result
 }
 
 export { updateForm }
