@@ -8,10 +8,23 @@ import { statusCodes } from '~/src/api/common/constants/status-codes.js'
  */
 const formFindOneController = {
   options: {
+    tags: ['api', 'forms'],
     validate: {
       params: Joi.object({
         formId: Joi.string().required()
       })
+    },
+    plugins: {
+      'hapi-swagger': {
+        responses: {
+          200: {
+            description: 'Form retrieved successfully'
+          },
+          404: {
+            description: 'Form not found'
+          }
+        }
+      }
     }
   },
   handler: async (request, h) => {

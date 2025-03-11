@@ -8,6 +8,7 @@ import { statusCodes } from '~/src/api/common/constants/status-codes.js'
  */
 const formUpdateController = {
   options: {
+    tags: ['api', 'forms'],
     validate: {
       params: Joi.object({
         formId: Joi.string().required()
@@ -63,6 +64,21 @@ const formUpdateController = {
           })
           .optional()
       }).or('formName', 'page')
+    },
+    plugins: {
+      'hapi-swagger': {
+        responses: {
+          200: {
+            description: 'Form updated successfully'
+          },
+          404: {
+            description: 'Form not found'
+          },
+          400: {
+            description: 'Invalid request payload'
+          }
+        }
+      }
     }
   },
   handler: async (request, h) => {

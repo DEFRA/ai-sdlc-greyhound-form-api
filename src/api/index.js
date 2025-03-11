@@ -15,6 +15,10 @@ async function createServer() {
   setupProxy()
   const server = hapi.server({
     port: config.get('port'),
+    debug: {
+      request: ['error'],
+      log: ['error']
+    },
     routes: {
       validate: {
         options: {
@@ -38,6 +42,20 @@ async function createServer() {
     },
     router: {
       stripTrailingSlash: true
+    }
+  })
+
+  // Add error logging for debugging
+  server.events.on('request', (request, event, tags) => {
+    if (tags.error) {
+      // eslint-disable-next-line no-console
+      console.error(
+        `Request error: ${event.error ? event.error.message : 'unknown'}`
+      )
+      if (event.error && event.error.stack) {
+        // eslint-disable-next-line no-console
+        console.error(event.error.stack)
+      }
     }
   })
 

@@ -8,10 +8,23 @@ import { statusCodes } from '~/src/api/common/constants/status-codes.js'
  */
 const formCreateController = {
   options: {
+    tags: ['api', 'forms'],
     validate: {
       payload: Joi.object({
         formName: Joi.string().required().min(1).max(100)
       })
+    },
+    plugins: {
+      'hapi-swagger': {
+        responses: {
+          201: {
+            description: 'Form created successfully'
+          },
+          400: {
+            description: 'Invalid request payload'
+          }
+        }
+      }
     }
   },
   handler: async (request, h) => {

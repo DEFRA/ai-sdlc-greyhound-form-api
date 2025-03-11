@@ -8,10 +8,20 @@ import { statusCodes } from '~/src/api/common/constants/status-codes.js'
  */
 const formFindAllController = {
   options: {
+    tags: ['api', 'forms'],
     validate: {
       query: Joi.object({
         status: Joi.string().valid('in-progress', 'submitted').optional()
       })
+    },
+    plugins: {
+      'hapi-swagger': {
+        responses: {
+          200: {
+            description: 'Forms retrieved successfully'
+          }
+        }
+      }
     }
   },
   handler: async (request, h) => {
