@@ -17,9 +17,20 @@ async function findFormById(db, formId) {
     throw Boom.notFound(`Form with ID ${formId} not found`)
   }
 
-  const form = await db
-    .collection('forms')
-    .findOne({ _id: objectId }, { projection: { _id: 0, id: '$_id' } })
+  const form = await db.collection('forms').findOne(
+    { _id: objectId },
+    {
+      projection: {
+        _id: 0,
+        id: '$_id',
+        formName: 1,
+        status: 1,
+        createdAt: 1,
+        updatedAt: 1,
+        pages: 1
+      }
+    }
+  )
 
   if (!form) {
     throw Boom.notFound(`Form with ID ${formId} not found`)

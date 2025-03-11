@@ -20,46 +20,46 @@ const formUpdateController = {
           .when('page', {
             is: 'applicantDetails',
             then: Joi.object({
-              racetrackName: Joi.string().optional(),
-              applicantName: Joi.string().optional(),
-              applicantAddress: Joi.string().optional(),
-              applicantPostcode: Joi.string().optional(),
-              racetrackAddress: Joi.string().optional(),
-              racetrackPostcode: Joi.string().optional(),
-              telephone: Joi.string().optional(),
-              email: Joi.string().email().optional(),
-              disqualified: Joi.boolean().optional(),
-              disqualificationDetails: Joi.string().optional(),
-              applicationDate: Joi.date().optional().allow(null)
+              racetrackName: Joi.string().allow(''),
+              applicantName: Joi.string().allow(''),
+              applicantAddress: Joi.string().allow(''),
+              applicantPostcode: Joi.string().allow(''),
+              racetrackAddress: Joi.string().allow(''),
+              racetrackPostcode: Joi.string().allow(''),
+              telephone: Joi.string().allow(''),
+              email: Joi.string().email().allow(''),
+              disqualified: Joi.boolean(),
+              disqualificationDetails: Joi.string().allow(''),
+              applicationDate: Joi.date().allow(null)
             }),
             otherwise: Joi.object({
               condition1: Joi.object({
-                hasVetAgreement: Joi.boolean().optional(),
-                anticipatedAgreementDate: Joi.date().optional().allow(null),
-                vetContact: Joi.string().optional(),
-                hasVetRegister: Joi.boolean().optional(),
-                anticipatedRegisterDate: Joi.date().optional().allow(null)
-              }).optional(),
+                hasVetAgreement: Joi.boolean(),
+                anticipatedAgreementDate: Joi.date().allow(null),
+                vetContact: Joi.string().allow(''),
+                hasVetRegister: Joi.boolean(),
+                anticipatedRegisterDate: Joi.date().allow(null)
+              }),
               condition2: Joi.object({
-                facilitiesReady: Joi.boolean().optional(),
-                anticipatedFacilitiesDate: Joi.date().optional().allow(null)
-              }).optional(),
+                facilitiesReady: Joi.boolean(),
+                anticipatedFacilitiesDate: Joi.date().allow(null)
+              }),
               condition3: Joi.object({
-                kennelsReady: Joi.boolean().optional(),
-                anticipatedKennelsDate: Joi.date().optional().allow(null)
-              }).optional(),
+                kennelsReady: Joi.boolean(),
+                anticipatedKennelsDate: Joi.date().allow(null)
+              }),
               condition4: Joi.object({
-                greyhoundIdentified: Joi.boolean().optional(),
-                anticipatedIdentificationDate: Joi.date().optional().allow(null)
-              }).optional(),
+                greyhoundIdentified: Joi.boolean(),
+                anticipatedIdentificationDate: Joi.date().allow(null)
+              }),
               condition5: Joi.object({
-                recordsKept: Joi.boolean().optional(),
-                anticipatedRecordsDate: Joi.date().optional().allow(null)
-              }).optional(),
+                recordsKept: Joi.boolean(),
+                anticipatedRecordsDate: Joi.date().allow(null)
+              }),
               condition6: Joi.object({
-                injuryRecordsKept: Joi.boolean().optional(),
-                anticipatedInjuryRecordsDate: Joi.date().optional().allow(null)
-              }).optional()
+                injuryRecordsKept: Joi.boolean(),
+                anticipatedInjuryRecordsDate: Joi.date().allow(null)
+              })
             })
           })
           .optional()

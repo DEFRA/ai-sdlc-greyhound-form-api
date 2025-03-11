@@ -14,7 +14,16 @@ async function findAllForms(db, options = {}) {
 
   const cursor = db
     .collection('forms')
-    .find(query, { projection: { _id: 0, id: '$_id' } })
+    .find(query)
+    .project({
+      _id: 0,
+      id: '$_id',
+      formName: 1,
+      status: 1,
+      createdAt: 1,
+      updatedAt: 1,
+      pages: 1
+    })
     .sort({ updatedAt: -1 }) // Sort by most recently updated
 
   return cursor.toArray()
